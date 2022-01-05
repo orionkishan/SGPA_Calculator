@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">SGPA Calculator</string>
+    <string name="branch">Branch</string>
+    <string name="semester">Sem</string>
+    <string name="go">Go</string>
+    <string name="sgpa">SGPA</string>
+    <string name="sample">sample</string>
+    <string name="cse">CSE</string>
+    <string name="i">I</string>
+    <string-array name="Branch">
+        <item>CSE</item>
+        <item>ECE</item>
+        <item>EEE</item>
+
+    </string-array>
+    <string-array name="Semester">
+        <item>I</item>
+        <item>II</item>
+        <item>III</item>
+        <item>IV</item>
+        <item>V</item>
+        <item>VI</item>
+        <item>VII</item>
+        <item>VIII</item>
+    </string-array>
 </resources>
