@@ -6,10 +6,7 @@ import android.content.DialogInterface
 import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.Button
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -87,7 +84,7 @@ class sgpa_activity : AppCompatActivity() {
         rv?.setLayoutManager(gridLayoutManager)
 
         list = ArrayList<String>()
-        courseadapter = courseAdapter(this, list!!)
+        courseadapter = courseAdapter(this, branch, sem, list!!)
         rv?.setAdapter(courseadapter)
         val task = downloadTask()
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
@@ -102,9 +99,14 @@ class sgpa_activity : AppCompatActivity() {
             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
         }
 
-        val sgpa: Double=0.0
+
+
         val calculateButton = findViewById<Button>(R.id.calculateButton)
         calculateButton.setOnClickListener(){
+
+            var sgpa: Double= (courseadapter!!.gradeSum/ courseadapter!!.totalCredits)
+            Log.i(sgpa.toString(),"SGPA is")
+            Log.i(courseadapter!!.gradeSum.toString(),"GradeSum is")
             AlertDialog.Builder(this)
                 .setTitle("SGPA")
                 .setMessage("Your SGPA is $sgpa") // Specifying a listener allows you to take an action before dismissing the dialog.
@@ -116,7 +118,6 @@ class sgpa_activity : AppCompatActivity() {
                 .setNegativeButton(android.R.string.no, null)
                 .show()
         }
-
     }
 }
 
