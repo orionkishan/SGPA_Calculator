@@ -24,6 +24,8 @@ class sgpa_activity : AppCompatActivity() {
         var courseadapter: courseAdapter? = null
         var database: FirebaseDatabase? = null
         var ref: DatabaseReference? = null
+        var branch:String ="CSE"
+        var sem:String ="I"
     }
 
 
@@ -31,7 +33,7 @@ class sgpa_activity : AppCompatActivity() {
     {
         override fun doInBackground(vararg voids: Void?): Void? {
             database = FirebaseDatabase.getInstance()
-            ref = database!!.getReference("Branch").child("CSE").child("I")
+            ref = database!!.getReference("Branch").child(branch).child(sem)
             return null
         }
 
@@ -44,6 +46,8 @@ class sgpa_activity : AppCompatActivity() {
                         for (snap in snapshot.children) {
                                 snap.key?.let { list?.add(it) }
                         }
+
+
                         courseadapter?.notifyDataSetChanged()
                     }
                 }
@@ -64,12 +68,12 @@ class sgpa_activity : AppCompatActivity() {
         val autoCompleteTextViewSemester = findViewById<AutoCompleteTextView>(R.id.autoCompleteTextViewSemester)
 //        val autoCompleteTextViewGrade = findViewById<AutoCompleteTextView>(R.id.autoCompleteTextViewGrade)
 
-        val branch = resources.getStringArray(R.array.Branch)
-        val semester = resources.getStringArray(R.array.Semester)
+        val branchArray = resources.getStringArray(R.array.Branch)
+        val semesterArray = resources.getStringArray(R.array.Semester)
         val grade = resources.getStringArray(R.array.Grades)
 
-        val branchAdapter = ArrayAdapter(this, R.layout.dropdown_items, branch)
-        val semesterAdapter = ArrayAdapter(this, R.layout.dropdown_items, semester)
+        val branchAdapter = ArrayAdapter(this, R.layout.dropdown_items, branchArray)
+        val semesterAdapter = ArrayAdapter(this, R.layout.dropdown_items, semesterArray)
         val gradeAdapter = ArrayAdapter(this, R.layout.dropdown_items, grade)
 
         autoCompleteTextViewBranch.setAdapter(branchAdapter)
@@ -89,11 +93,13 @@ class sgpa_activity : AppCompatActivity() {
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
 
         goButton.setOnClickListener(){
-            // load the recycler view
-            var branchOfStudent: String = autoCompleteTextViewBranch.toString()
-            var semesterOfStudent: String = autoCompleteTextViewSemester.toString()
-            Toast.makeText(this, "Branch is $branchOfStudent", Toast.LENGTH_SHORT).show()
-            Toast.makeText(this, "Sem is $semesterOfStudent", Toast.LENGTH_SHORT).show()
+
+            branch =  autoCompleteTextViewBranch.text.toString()
+            sem  = autoCompleteTextViewSemester.text.toString()
+            list!!.clear();
+            courseadapter!!.notifyDataSetChanged();
+            val task = downloadTask()
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
         }
 
         val sgpa: Double=0.0
@@ -113,3 +119,5 @@ class sgpa_activity : AppCompatActivity() {
 
     }
 }
+
+
