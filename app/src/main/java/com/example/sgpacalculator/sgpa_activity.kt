@@ -69,8 +69,8 @@ class sgpa_activity : AppCompatActivity() {
         val semesterArray = resources.getStringArray(R.array.Semester)
         val grade = resources.getStringArray(R.array.Grades)
 
-        val branchAdapter = ArrayAdapter(this, R.layout.dropdown_items, branchArray)
-        val semesterAdapter = ArrayAdapter(this, R.layout.dropdown_items, semesterArray)
+        val branchAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, branchArray)
+        val semesterAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, semesterArray)
         val gradeAdapter = ArrayAdapter(this, R.layout.dropdown_items, grade)
 
         autoCompleteTextViewBranch.setAdapter(branchAdapter)
