@@ -1,25 +1,14 @@
 package com.example.sgpacalculator
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.net.Uri
-import android.os.AsyncTask
-import android.os.Environment
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.CheckBox
-import android.widget.TextView
-import androidx.core.widget.doOnTextChanged
+import android.widget.AdapterView.OnItemClickListener
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.FirebaseApp
-import com.google.firebase.database.*
 import java.util.*
 
 
@@ -43,7 +32,7 @@ class courseAdapter internal constructor(context: Context,var branch: String,var
         holder.check.setOnCheckedChangeListener(null)
 
         course.getisChecked()?.let { holder.check.setChecked(it) }
-
+        holder.autoCompleteTextViewGrade.setText(holder.autoCompleteTextViewGrade.getAdapter().getItem(course.getIndexGrade()).toString(), false);
 
         holder.check.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
             override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
@@ -62,22 +51,20 @@ class courseAdapter internal constructor(context: Context,var branch: String,var
             }
         })
 
-
-        holder.autoCompleteTextViewGrade.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                course.getCoursename()?.let { map.put(it,
-                    Pair(course.getCredits(),holder.autoCompleteTextViewGrade.text.toString()) as Pair<Double, String>
-                ) }
-                course.setGrade(holder.autoCompleteTextViewGrade.text.toString())
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        holder.autoCompleteTextViewGrade.setOnItemClickListener(OnItemClickListener { parent, view, position, id ->
+            course.setIndexGrade(position)
+            if(course.getisChecked()!!) {
+                course.getCoursename()?.let {
+                    map.put(
+                        it,
+                        Pair(
+                            course.getCredits(),
+                            holder.autoCompleteTextViewGrade.text.toString()
+                        ) as Pair<Double, String>
+                    )
+                }
             }
         })
-
 
     }
 
@@ -99,8 +86,8 @@ class courseAdapter internal constructor(context: Context,var branch: String,var
         var coursename: TextView = itemView.findViewById(R.id.coursename)
         var check: CheckBox = itemView.findViewById(R.id.checkBox)
         val autoCompleteTextViewGrade = itemView.findViewById<AutoCompleteTextView>(R.id.autoCompleteTextViewGrade)
-
         init {
+            this.setIsRecyclable(false)
             val grade = itemView.resources.getStringArray(R.array.Grades)
             val gradeAdapter = ArrayAdapter(context, R.layout.dropdown_items, grade)
             autoCompleteTextViewGrade.setAdapter(gradeAdapter)

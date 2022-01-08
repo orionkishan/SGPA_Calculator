@@ -1,18 +1,20 @@
 package com.example.sgpacalculator
 
+import android.util.Log
+
 class courses {
     private var coursename: String?=null
     private var credits: Double = 0.0
     var isChecked: Boolean = false
-    var grade: String="A+"
+    var indexGrade: Int = 0
 
     @JvmName("getGrade1")
-    fun getGrade():String{
-        return grade
+    fun getIndexGrade():Int{
+        return indexGrade
     }
     @JvmName("setGrade1")
-    fun setGrade(grade: String) {
-        this.grade = grade
+    fun setIndexGrade(indexGrade: Int) {
+        this.indexGrade = indexGrade
     }
     fun getCredits():Double?{
         return credits

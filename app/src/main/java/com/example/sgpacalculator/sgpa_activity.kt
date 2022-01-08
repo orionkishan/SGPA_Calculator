@@ -24,6 +24,7 @@ class sgpa_activity : AppCompatActivity() {
         var ref: DatabaseReference? = null
         var branch:String ="CSE"
         var sem:String ="I"
+        var gradeMap : HashMap<String, Int> = HashMap<String, Int> ()
     }
 
 
@@ -65,6 +66,14 @@ class sgpa_activity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sgpa)
+
+        gradeMap["A+"] = 10
+        gradeMap["A"] = 9
+        gradeMap["B+"] = 8
+        gradeMap["B"] = 7
+        gradeMap["C"] = 6
+        gradeMap["D"] = 5
+        gradeMap["F"]= 0
 
 
         val autoCompleteTextViewBranch = findViewById<AutoCompleteTextView>(R.id.autoCompleteTextViewBranch)
@@ -117,11 +126,9 @@ class sgpa_activity : AppCompatActivity() {
             var denominator: Double= courseadapter!!.totalCredits
 
             for(item in map)
-            {
-                Log.i("LOG::",item.value.first.toString()+item.value.second)
+                numerator+=item.value.first* gradeMap[item.value.second]!!
 
-            }
-            var sgpa: Double=0.0
+            var sgpa: Double=numerator/denominator
             Log.i("SGPA is",sgpa.toString())
 //            Log.i(courseadapter!!.gradeSum.toString(),"GradeSum is")
             AlertDialog.Builder(this)
