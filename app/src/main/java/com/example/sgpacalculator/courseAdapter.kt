@@ -1,22 +1,14 @@
 package com.example.sgpacalculator
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.net.Uri
-import android.os.AsyncTask
-import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.MimeTypeMap
 import android.widget.*
-import androidx.cardview.widget.CardView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.*
-import java.io.File
 import java.util.*
 
 
@@ -37,6 +29,25 @@ class courseAdapter internal constructor(context: Context,var branch: String,var
         val course: courses = list[position]
         holder.coursename.text = course.getCoursename()
 //        course.getCredits()?.let { totalCredit(it) }
+
+        //in some cases, it will prevent unwanted situations
+        holder.check.setOnCheckedChangeListener(null)
+
+        course.getisChecked()?.let { holder.check.setChecked(it) }
+
+        holder.check.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
+            override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+                //set your object's last status
+                course.setisChecked(isChecked)
+                if(holder.check.isChecked){
+                    course.getCredits()?.let { totalCredit(it) }
+                }
+                else{
+                    course.getCredits()?.let { subtractCredit(it) }
+                }
+            }
+        })
+        Log.i("Course is",course.getCoursename().toString())
     }
 
 
@@ -58,26 +69,47 @@ class courseAdapter internal constructor(context: Context,var branch: String,var
         var coursename: TextView = itemView.findViewById(R.id.coursename)
         var check: CheckBox = itemView.findViewById(R.id.checkBox)
 
-        init {
-            check.setOnCheckedChangeListener { buttonView, isChecked ->
-                if (!isChecked) {
-                    for (course in list)
-                    {
-                        if(course.getCoursename()?.equals(coursename)==true)
-                            course.getCredits()?.let { subtractCredit(it) }
-                    }
-                }
-                else
-                {
-                    for (course in list)
-                    {
-                        if(course.getCoursename()?.equals(coursename)==true)
-                            course.getCredits()?.let { totalCredit(it) }
-                    }
-                }
-            }
-
-        }
+//        init {
+//            check.setOnClickListener(View.OnClickListener { v: View? ->
+//                check.setOn
+//                val courselist: courses = list[absoluteAdapterPosition]
+//                courselist.setisChecked(!courselist.isChecked)
+//                notifyItemChanged(absoluteAdapterPosition)
+//                Log.i("Course is ",courselist.getCoursename().toString())
+//            })
+//            check.setOnClickListener(View.OnClickListener {
+//                fun onClick(view:View){
+//                    if(check.isChecked){
+//                        for (course in list)
+//                        {
+//                            if(course.getCoursename()?.equals(coursename)==true)
+//                                course.getCredits()?.let { totalCredit(it) }
+//                        }
+//                    }
+//                    else{
+//                        for (course in list)
+//                        {
+//                            if(course.getCoursename()?.equals(coursename)==true)
+//                                course.getCredits()?.let { subtractCredit(it) }
+//                        }
+//                    }
+//                }
+//            })
+//            check.setOnCheckedChangeListener(null)
+//            check.isChecked = cours.isSelected();
+//            check.setOnCheckedChangeListener { buttonView, isChecked ->
+//                val courselist: courses = list[bindingAdapterPosition]
+//                courselist.setisChecked(isChecked)
+//                notifyItemChanged(bindingAdapterPosition)
+//                if(courselist.getisChecked()==true){
+//                    courselist.getCredits()?.let { totalCredit(it) }
+//                }
+//                else{
+//                    courselist.getCredits()?.let {subtractCredit(it)}
+//                }
+//                Log.i("Course is ",courselist.getCoursename().toString())
+//            }
+//        }
     }
 
     init {

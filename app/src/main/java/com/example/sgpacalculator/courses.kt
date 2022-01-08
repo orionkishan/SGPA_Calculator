@@ -3,6 +3,7 @@ package com.example.sgpacalculator
 class courses {
     private var coursename: String?=null
     private var credits: Double = 0.0
+    var isChecked: Boolean = false
 
     fun getCredits():Double?{
         return credits
@@ -15,5 +16,11 @@ class courses {
     }
     fun setCoursename(courseName: String) {
         this.coursename = courseName;
+    }
+    fun getisChecked(): Boolean?{
+        return isChecked
+    }
+    fun setisChecked(isChecked: Boolean){
+        this.isChecked = isChecked
     }
 }

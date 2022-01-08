@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -102,7 +103,29 @@ class sgpa_activity : AppCompatActivity() {
             courseadapter!!.notifyDataSetChanged();
             val task = downloadTask()
             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+            courseadapter!!.totalCredits=0.0
         }
+
+//        var check: CheckBox = findViewById(R.id.checkBox)
+//        check.setOnClickListener(View.OnClickListener {
+//            fun onClick(view: View){
+//                if(check.isChecked){
+//                    for (course in list!!)
+//                    {
+//                        if(course.getCoursename()?.equals(coursename)==true)
+//                            course.getCredits()?.let { totalCredit(it) }
+//                    }
+//                }
+//                else{
+//                    for (course in list)
+//                    {
+//                        if(course.getCoursename()?.equals(coursename)==true)
+//                            course.getCredits()?.let { subtractCredit(it) }
+//                    }
+//                }
+//            }
+//        })
+
 
 
 
