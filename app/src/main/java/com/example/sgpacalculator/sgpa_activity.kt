@@ -68,20 +68,18 @@ class sgpa_activity : AppCompatActivity() {
 
 
         val autoCompleteTextViewBranch = findViewById<AutoCompleteTextView>(R.id.autoCompleteTextViewBranch)
+
+
         val autoCompleteTextViewSemester = findViewById<AutoCompleteTextView>(R.id.autoCompleteTextViewSemester)
-//        val autoCompleteTextViewGrade = findViewById<AutoCompleteTextView>(R.id.autoCompleteTextViewGrade)
 
         val branchArray = resources.getStringArray(R.array.Branch)
         val semesterArray = resources.getStringArray(R.array.Semester)
-        val grade = resources.getStringArray(R.array.Grades)
 
         val branchAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, branchArray)
         val semesterAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, semesterArray)
-        val gradeAdapter = ArrayAdapter(this, R.layout.dropdown_items, grade)
 
         autoCompleteTextViewBranch.setAdapter(branchAdapter)
         autoCompleteTextViewSemester.setAdapter(semesterAdapter)
-//        autoCompleteTextViewGrade.setAdapter(gradeAdapter)
 
         val goButton =  findViewById<Button>(R.id.goButton)
 
@@ -104,27 +102,9 @@ class sgpa_activity : AppCompatActivity() {
             val task = downloadTask()
             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
             courseadapter!!.totalCredits=0.0
+            courseadapter!!.map.clear()
         }
 
-//        var check: CheckBox = findViewById(R.id.checkBox)
-//        check.setOnClickListener(View.OnClickListener {
-//            fun onClick(view: View){
-//                if(check.isChecked){
-//                    for (course in list!!)
-//                    {
-//                        if(course.getCoursename()?.equals(coursename)==true)
-//                            course.getCredits()?.let { totalCredit(it) }
-//                    }
-//                }
-//                else{
-//                    for (course in list)
-//                    {
-//                        if(course.getCoursename()?.equals(coursename)==true)
-//                            course.getCredits()?.let { subtractCredit(it) }
-//                    }
-//                }
-//            }
-//        })
 
 
 
@@ -132,7 +112,16 @@ class sgpa_activity : AppCompatActivity() {
         val calculateButton = findViewById<Button>(R.id.calculateButton)
         calculateButton.setOnClickListener(){
 
-            var sgpa: Double= courseadapter!!.totalCredits
+            var map = courseadapter!!.map
+            var numerator: Double =0.0
+            var denominator: Double= courseadapter!!.totalCredits
+
+            for(item in map)
+            {
+                Log.i("LOG::",item.value.first.toString()+item.value.second)
+
+            }
+            var sgpa: Double=0.0
             Log.i("SGPA is",sgpa.toString())
 //            Log.i(courseadapter!!.gradeSum.toString(),"GradeSum is")
             AlertDialog.Builder(this)

@@ -4,7 +4,16 @@ class courses {
     private var coursename: String?=null
     private var credits: Double = 0.0
     var isChecked: Boolean = false
+    var grade: String="A+"
 
+    @JvmName("getGrade1")
+    fun getGrade():String{
+        return grade
+    }
+    @JvmName("setGrade1")
+    fun setGrade(grade: String) {
+        this.grade = grade
+    }
     fun getCredits():Double?{
         return credits
     }
