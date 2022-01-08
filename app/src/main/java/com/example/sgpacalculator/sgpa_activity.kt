@@ -17,7 +17,7 @@ import java.util.*
 class sgpa_activity : AppCompatActivity() {
     companion object{
         var rv: RecyclerView? = null
-        var list: ArrayList<String>? = null
+        var list: ArrayList<courses>? = null
         var courseadapter: courseAdapter? = null
         var database: FirebaseDatabase? = null
         var ref: DatabaseReference? = null
@@ -41,7 +41,12 @@ class sgpa_activity : AppCompatActivity() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
                         for (snap in snapshot.children) {
-                                snap.key?.let { list?.add(it) }
+                                var course:courses = courses()
+                                snap.key?.let { course.setCoursename(it)}
+                                var credits:String = snap.value.toString()
+                                credits = credits.subSequence(9,credits.length-1) as String
+                                course.setCredits(credits.toDouble())
+                                list?.add(course)
                         }
 
 
@@ -83,7 +88,7 @@ class sgpa_activity : AppCompatActivity() {
         val gridLayoutManager = GridLayoutManager(this, 1, GridLayoutManager.VERTICAL, false)
         rv?.setLayoutManager(gridLayoutManager)
 
-        list = ArrayList<String>()
+        list = ArrayList<courses>()
         courseadapter = courseAdapter(this, branch, sem, list!!)
         rv?.setAdapter(courseadapter)
         val task = downloadTask()
@@ -104,9 +109,9 @@ class sgpa_activity : AppCompatActivity() {
         val calculateButton = findViewById<Button>(R.id.calculateButton)
         calculateButton.setOnClickListener(){
 
-            var sgpa: Double= (courseadapter!!.gradeSum/ courseadapter!!.totalCredits)
-            Log.i(sgpa.toString(),"SGPA is")
-            Log.i(courseadapter!!.gradeSum.toString(),"GradeSum is")
+            var sgpa: Double= courseadapter!!.totalCredits
+            Log.i("SGPA is",sgpa.toString())
+//            Log.i(courseadapter!!.gradeSum.toString(),"GradeSum is")
             AlertDialog.Builder(this)
                 .setTitle("SGPA")
                 .setMessage("Your SGPA is $sgpa") // Specifying a listener allows you to take an action before dismissing the dialog.

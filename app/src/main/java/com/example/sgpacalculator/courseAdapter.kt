@@ -20,9 +20,9 @@ import java.io.File
 import java.util.*
 
 
-class courseAdapter internal constructor(context: Context,var branch: String,var sem:String, list: ArrayList<String>) : RecyclerView.Adapter<courseAdapter.holder>() {
+class courseAdapter internal constructor(context: Context,var branch: String,var sem:String, list: ArrayList<courses>) : RecyclerView.Adapter<courseAdapter.holder>() {
 
-    lateinit var list: ArrayList<String>
+    lateinit var list: ArrayList<courses>
     lateinit var inflater: LayoutInflater
     var gradeSum: Double = 0.0
     var totalCredits: Double = 0.0
@@ -34,9 +34,9 @@ class courseAdapter internal constructor(context: Context,var branch: String,var
     }
 
     override fun onBindViewHolder(holder: holder, position: Int) {
-        val completeCourseName: String = list[position]
-        holder.coursename.text = completeCourseName
-        totalCredit(holder.coursename.text.toString())
+        val course: courses = list[position]
+        holder.coursename.text = course.getCoursename()
+//        course.getCredits()?.let { totalCredit(it) }
     }
 
 
@@ -44,26 +44,12 @@ class courseAdapter internal constructor(context: Context,var branch: String,var
         return list.size
     }
 
-    fun totalCredit(coursename:String) {
+    fun totalCredit(credit:Double) {
+        totalCredits += credit
+    }
 
-        var database=FirebaseDatabase.getInstance()
-        var ref:DatabaseReference= database!!.getReference("Branch").child(branch).child(sem).child(coursename)
-        ref?.addValueEventListener(object : ValueEventListener {
-            @SuppressLint("SetTextI18n")
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    for (snap in snapshot.children) {
-                        var credits: Double = snap.value.toString().toDouble()
-                        totalCredits += credits
-                        Log.i("Credits:",totalCredits.toString())
-                    }
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.i("Cancelled", error.details)
-            }
-        })
+    fun subtractCredit(credit: Double){
+        totalCredits-= credit
     }
 
 
@@ -72,7 +58,26 @@ class courseAdapter internal constructor(context: Context,var branch: String,var
         var coursename: TextView = itemView.findViewById(R.id.coursename)
         var check: CheckBox = itemView.findViewById(R.id.checkBox)
 
+        init {
+            check.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (!isChecked) {
+                    for (course in list)
+                    {
+                        if(course.getCoursename()?.equals(coursename)==true)
+                            course.getCredits()?.let { subtractCredit(it) }
+                    }
+                }
+                else
+                {
+                    for (course in list)
+                    {
+                        if(course.getCoursename()?.equals(coursename)==true)
+                            course.getCredits()?.let { totalCredit(it) }
+                    }
+                }
+            }
 
+        }
     }
 
     init {
