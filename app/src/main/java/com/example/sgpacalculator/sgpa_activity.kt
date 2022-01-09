@@ -10,10 +10,11 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.util.*
 
 
@@ -116,41 +117,53 @@ class sgpa_activity : AppCompatActivity() {
         var clicksOnGo: Int=0
 
         goButton.setOnClickListener(){
-            clicksOnGo++
-            branch =  autoCompleteTextViewBranch.text.toString()
-            sem  = autoCompleteTextViewSemester.text.toString()
-            list!!.clear();
-            courseadapter!!.notifyDataSetChanged();
-            val task = downloadTask()
-            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
-            courseadapter!!.totalCredits=0.0
-            courseadapter!!.map.clear()
 
-            val sv = findViewById<View>(R.id.scrollView) as ScrollView
+            if (!dataConnection.getInstance(this).isOnline) {
+                val alert = Alert(this)
+                alert.show()
 
-            val rv = findViewById<RecyclerView>(R.id.rvSubjects) as RecyclerView
+            }
 
-            val calcButton = findViewById<View>(R.id.calculateButton) as Button
+            else
+            {
+                clicksOnGo++
+                branch =  autoCompleteTextViewBranch.text.toString()
+                sem  = autoCompleteTextViewSemester.text.toString()
+                list!!.clear();
+                courseadapter!!.notifyDataSetChanged();
+                val task = downloadTask()
+                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+                courseadapter!!.totalCredits=0.0
+                courseadapter!!.map.clear()
+
+                val sv = findViewById<View>(R.id.scrollView) as ScrollView
+
+                val rv = findViewById<RecyclerView>(R.id.rvSubjects) as RecyclerView
+
+                val calcButton = findViewById<View>(R.id.calculateButton) as Button
 
 //            val oa1: ObjectAnimator = ObjectAnimator.ofFloat(tv, "translationY", 800f, 0f)
 //            oa1.duration = 1000
 
-            val oa2: ObjectAnimator = ObjectAnimator.ofFloat(ll, "translationY", 800f, 0f)
-            oa2.duration = 1000
+                val oa2: ObjectAnimator = ObjectAnimator.ofFloat(ll, "translationY", 800f, 0f)
+                oa2.duration = 1000
 
-            if(clicksOnGo==1){
-                sv.visibility = View.VISIBLE
-                rv.animate().alpha(1.0f).setDuration(2000);
-                calcButton.animate().alpha(1.0f).setDuration(2000);
+                if(clicksOnGo==1){
+                    sv.visibility = View.VISIBLE
+                    rv.animate().alpha(1.0f).setDuration(2000);
+                    calcButton.animate().alpha(1.0f).setDuration(2000);
 //                oa1.start()
-                tv.animate().alpha(0.0f)
-                oa2.start()
+                    tv.animate().alpha(0.0f)
+                    oa2.start()
+                }
             }
+
         }
-
-
-
-
+        fun roundOffDecimal(number: Double): Double {
+            val df = DecimalFormat("#.##")
+            df.roundingMode = RoundingMode.CEILING
+            return df.format(number).toDouble()
+        }
 
         val calculateButton = findViewById<Button>(R.id.calculateButton)
         calculateButton.setOnClickListener(){
@@ -162,8 +175,8 @@ class sgpa_activity : AppCompatActivity() {
             for(item in map)
                 numerator+=item.value.first* gradeMap[item.value.second]!!
 
-            var sgpa: Double=numerator/denominator
-            Log.i("SGPA is",sgpa.toString())
+            var sgpa: Double=(numerator/denominator)
+            sgpa = roundOffDecimal(sgpa)
 //            Log.i(courseadapter!!.gradeSum.toString(),"GradeSum is")
             AlertDialog.Builder(this)
                 .setTitle("SGPA")
