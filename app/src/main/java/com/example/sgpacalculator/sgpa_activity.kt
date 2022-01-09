@@ -1,5 +1,6 @@
 package com.example.sgpacalculator
 
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -9,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
@@ -63,6 +65,7 @@ class sgpa_activity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sgpa)
@@ -75,10 +78,10 @@ class sgpa_activity : AppCompatActivity() {
         gradeMap["D"] = 5
         gradeMap["F"]= 0
 
+        val ll = findViewById<LinearLayout>(R.id.linearLayout)
+        val tv = findViewById<TextView>(R.id.textView)
 
         val autoCompleteTextViewBranch = findViewById<AutoCompleteTextView>(R.id.autoCompleteTextViewBranch)
-
-
         val autoCompleteTextViewSemester = findViewById<AutoCompleteTextView>(R.id.autoCompleteTextViewSemester)
 
         val branchArray = resources.getStringArray(R.array.Branch)
@@ -102,8 +105,18 @@ class sgpa_activity : AppCompatActivity() {
         val task = downloadTask()
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
 
-        goButton.setOnClickListener(){
+        val oa1: ObjectAnimator = ObjectAnimator.ofFloat(tv, "translationY", 0f, 800f)
+        oa1.duration = 800
+        oa1.start()
 
+        val oa2: ObjectAnimator = ObjectAnimator.ofFloat(ll, "translationY", 0f, 800f)
+        oa2.duration = 800
+        oa2.start()
+
+        var clicksOnGo: Int=0
+
+        goButton.setOnClickListener(){
+            clicksOnGo++
             branch =  autoCompleteTextViewBranch.text.toString()
             sem  = autoCompleteTextViewSemester.text.toString()
             list!!.clear();
@@ -112,6 +125,27 @@ class sgpa_activity : AppCompatActivity() {
             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
             courseadapter!!.totalCredits=0.0
             courseadapter!!.map.clear()
+
+            val sv = findViewById<View>(R.id.scrollView) as ScrollView
+
+            val rv = findViewById<RecyclerView>(R.id.rvSubjects) as RecyclerView
+
+            val calcButton = findViewById<View>(R.id.calculateButton) as Button
+
+//            val oa1: ObjectAnimator = ObjectAnimator.ofFloat(tv, "translationY", 800f, 0f)
+//            oa1.duration = 1000
+
+            val oa2: ObjectAnimator = ObjectAnimator.ofFloat(ll, "translationY", 800f, 0f)
+            oa2.duration = 1000
+
+            if(clicksOnGo==1){
+                sv.visibility = View.VISIBLE
+                rv.animate().alpha(1.0f).setDuration(2000);
+                calcButton.animate().alpha(1.0f).setDuration(2000);
+//                oa1.start()
+                tv.animate().alpha(0.0f)
+                oa2.start()
+            }
         }
 
 

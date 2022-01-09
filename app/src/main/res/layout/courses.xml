@@ -41,6 +41,7 @@
                 android:layout_weight="1"
                 android:paddingHorizontal="15dp"
                 android:paddingVertical="15dp"
+                app:boxBackgroundColor="@color/main_theme_transparent2"
                 app:layout_constraintTop_toBottomOf="@+id/coursename">
 
                 <AutoCompleteTextView
