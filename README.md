@@ -2,11 +2,7 @@
 
 SGPA Calculator
 
-<b> Problem Statement: </b>
-
-
-
-<b> Proposed Solution : </b>
+<b> About: </b>
 
 This project proposes a simple calculator which displays the subjects as per User's branch and semester and let User enter grades and calculate the SGPA
 using formula: (sum(credits*Grade point) for all subjects / total credits in the semester)
@@ -23,6 +19,6 @@ using formula: (sum(credits*Grade point) for all subjects / total credits in the
 
 <b> Application Link & Future Scope : </b>
 
-The app is currently in the initial development phase with NITD institute with a limited no. of users, You can access the app : [YOUR APP LINK HERE]
+The app is currently in the initial development phase with NITD institute with a limited no. of users.
 
 More functionalities are to be added soon.
