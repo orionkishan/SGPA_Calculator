@@ -11,7 +11,7 @@ SGPA Calculator
 This project proposes a simple calculator which displays the subjects as per User's branch and semester and let User enter grades and calculate the SGPA
 using formula: (sum(credits*Grade point) for all subjects / total credits in the semester)
 
-<img width="559" alt="sampleimages" src="https://user-images.githubusercontent.com/18289261/142846646-a6858641-ad88-43aa-b8bb-b690fd7126f1.png">
+<img width="559" alt="sampleimages" src="https://raw.githubusercontent.com/orionkishan/SGPA_Calculator/master/image.png">
 
 <b> Functionality & Concepts used : </b>
 
