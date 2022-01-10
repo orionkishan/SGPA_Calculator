@@ -1,7 +1,10 @@
 # Android-Study-Jams
 
-SGPA Calculator
+### Problem Statement
+Students face difficulties and confusion while preparing for their examinations and improving their Grade Point Average for the upcoming semester. Knowing what grades would improve their Grade Point Average and planning for the same before the starting of the semester, will let students choose the right plan for finishing the course and also to choose the right electives depending upon their strengths. 
 
+
+### Proposed Solution: SGPA Calculator
 <b> About: </b>
 
 This project proposes a simple calculator which displays the subjects as per User's branch and semester and let User enter grades and calculate the SGPA
