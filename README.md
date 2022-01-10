@@ -20,5 +20,6 @@ using formula: (sum(credits*Grade point) for all subjects / total credits in the
 <b> Application Link & Future Scope : </b>
 
 The app is currently in the initial development phase with NITD institute with a limited no. of users.
+You can access the app : [https://github.com/orionkishan/SGPA_Calculator/raw/master/sgpaCalculator.apk]
 
 More functionalities are to be added soon.
